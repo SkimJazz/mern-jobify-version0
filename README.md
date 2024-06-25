@@ -6573,7 +6573,17 @@ app.get('*', (req, res) => {
 - sign up of for account
 - create git repository
 
+
 #### Build Front-End on Render
+
+This section covers how to build the front-end on Render using the `npm run build` command.
+This is so that any changes made to the front-end code are reflected in the deployed
+application. The npm run build command compiles the front-end code and generates a
+production-ready build that can be served by the server. Essentially we are telling Render
+to run the build script in the client folder to generate the optimized production build so 
+we can continuously make or update changes to the front-end code with out having to manually
+build the front-end and upload the files to the server.
+
 
 - add script
 - change path

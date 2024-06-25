@@ -179,3 +179,93 @@ invalid data from being saved in the database.
 in the constants.js file are used to define the possible values for certain fields
 in the Job schema. They are imported into the JobModel.js file and used in the 
 definition of the Job schema to restrict the values of these fields.
+
+#### Build Front-End on Render
+
+The selected code is a part of the `package.json` file in a Node.js project. 
+This section, labeled as `"scripts"`, contains a set of predefined commands that can
+be run using the npm (Node Package Manager) command-line tool. These scripts are used
+to automate repetitive tasks such as starting the server, running the client, or setting
+up the project.
+
+The `"setup-project"` script is used to install the project dependencies. It runs `npm i` 
+to install the server-side dependencies, and then `cd client && npm i` to navigate to the
+client directory and install the client-side dependencies.
+
+```json
+"setup-project": "npm i && cd client && npm i",
+```
+
+The `"setup-production-app"` script is similar to the `"setup-project"` script, but it also
+builds the client-side application for production using `npm run build`.
+
+```json
+"setup-production-app": "npm i && cd client && npm i && npm run build",
+```
+
+The `"server"` script uses `nodemon` to start the server. Nodemon is a utility that 
+automatically restarts the server when file changes are detected, making it useful during
+development.
+
+```json
+"server": "nodemon server",
+```
+
+The `"client"` script navigates to the client directory and starts the client-side 
+application in development mode with `npm run dev`.
+
+```json
+"client": "cd client && npm run dev",
+```
+
+Finally, the `"dev"` script uses `concurrently` to run the `"server"` and`"client"` 
+scripts at the same time. The `--kill-others-on-fail` option ensures that if one 
+script fails, the other is also terminated.
+
+```json
+"dev": "concurrently --kill-others-on-fail \" npm run server\" \" npm run client\""
+```
+
+These scripts provide a convenient way to manage the project's tasks, and they can 
+be run from the command line using `npm run <script-name>`.
+
+
+#### Cloning and Installing project on local PC
+
+
+Sure, here are the steps to install the project on your personal PC:
+
+1. **Clone the Repository**: First, you need to clone the repository from GitHub
+to your local machine. Open your terminal and navigate to the directory where you
+want to clone the repository. Then, use the following command:
+
+```sh
+git clone git@github.com:SkimJazz/mern-jobify-version0.git
+```
+
+2. **Navigate to the Project Directory**: Once the repository is cloned, navigate
+to the project directory using the following command:
+
+```sh
+cd mern-jobify-v0
+```
+
+3. **Install Dependencies**: Now, you need to install the project dependencies.
+The `setup-project` script in the `package.json` file installs both the server-side
+and client-side dependencies. Run the following command:
+
+```sh
+npm run setup-project
+```
+
+4. **Start the Server and Client**: After the dependencies are installed, you can
+start the server and client. The `dev` script in the `package.json` file starts both
+the server and client concurrently. Run the following command:
+
+```sh
+npm run dev
+```
+
+Now, both the server and client should be running on your local machine. The server 
+will restart automatically whenever there are changes thanks to `nodemon`, and the 
+client will also update in real time as you make changes to the code.
