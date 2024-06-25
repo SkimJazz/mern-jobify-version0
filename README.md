@@ -6612,9 +6612,12 @@ app.get('*', (req, res) => {
 - remove node_modules and package-lock.json (optional)
 - run "npm run setup-production-app", followed by "node server"
 
+
 #### Test in Production
 
+
 - change build command on render
+
 
 ```sh
 npm run setup-production-app
@@ -6622,7 +6625,9 @@ npm run setup-production-app
 
 - push up to github
 
-#### Upload Image As Buffer
+
+#### Upload Image As Buffer - Update User Fix
+
 
 - remove public folder
 
