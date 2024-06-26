@@ -13,13 +13,14 @@
  * // Using the component
  * <DashboardLayout />
  */
-import { Outlet, redirect, useLoaderData, useNavigate } from "react-router-dom";
-import { Navbar, BigSidebar, SmallSidebar } from "../components";
+import { Outlet, redirect, useLoaderData, useNavigate, useNavigation } from "react-router-dom";
+import { Navbar, BigSidebar, SmallSidebar, Loading } from "../components";
 import Wrapper from "../assets/wrappers/Dashboard.js";
 import { useState, createContext, useContext } from 'react'; // React router has built-in 'prop' that works as a 'context'
 import { checkDefaultTheme} from "../App.jsx";
 import customFetch from "../utils/customFetch.js";
 import { toast } from "react-toastify";
+
 
 
 // Loader will get the data even before the component is rendered
@@ -54,8 +55,15 @@ const DashboardContext = createContext();
 //DashboardLayout component -> Parent for all the following components
 const DashboardLayout = ({ isDarkThemeEnabled }) => {
 
+    // Custom hooks
     const { user } = useLoaderData();       // RRD hook passed as a prop and used to get user data
     const navigate = useNavigate();     // RRD hook passed as a prop
+
+    // Navigation hook and state variable
+    const navigation = useNavigation();
+    const isPageLoading = navigation.state === 'loading';
+
+    // State variables
     const [showSidebar, setShowSidebar] = useState(false);
     const [isDarkTheme, setIsDarkTheme] = useState(isDarkThemeEnabled ?? checkDefaultTheme());
 
@@ -125,7 +133,7 @@ const DashboardLayout = ({ isDarkThemeEnabled }) => {
                     <div>
                         <Navbar />
                         <div className='dashboard-page'>
-                            <Outlet context={{ user }}/>
+                            {isPageLoading ? <Loading /> : <Outlet context={{ user }}/>}
                         </div>
                     </div>
                 </main>
