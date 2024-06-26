@@ -20,10 +20,13 @@ const Landing = () => {
                         job <span> tracking </span> app
                     </h1>
                     <p>
-                        I'm baby wayfarers hoodie next level taiyaki brooklyn cliche blue
-                        bottle single-origin coffee chia. Aesthetic post-ironic venmo,
-                        quinoa lo-fi tote bag adaptogen everyday carry meggings +1 brunch
-                        narwhal.
+                        Navigating the job market is now easier with our Job Tracker application.
+                        Tailored for job seekers, this tool helps you manage and track the status
+                        of all your job applications in one place. From application dates to
+                        interview schedules, Job Tracker keeps you updated and organized. Whether
+                        you’re a fresh graduate exploring opportunities or a professional seeking
+                        a career change, Job Tracker is your reliable partner in your job search
+                        journey. Start your path to your dream job with us today!
                     </p>
                     <Link to='/register' className='btn register-link'>
                         Register

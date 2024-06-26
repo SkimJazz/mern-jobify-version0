@@ -23,12 +23,12 @@ const Wrapper = styled.section`
         span {
             color: var(--primary-500);
         }
-        margin-bottom: 1.5rem;
+        margin-bottom: 2rem;
     }
     p {
         line-height: 2;
         color: var(--text-secondary-color);
-        margin-bottom: 1.5rem;
+        margin-bottom: 5rem;
         max-width: 35em;
         
     }
