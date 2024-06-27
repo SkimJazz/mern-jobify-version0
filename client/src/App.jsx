@@ -84,7 +84,7 @@ const router = createBrowserRouter([
       {
         // Child element-3 Dash Board
         path:'dashboard',
-        element: <DashboardLayout />,
+        element: <DashboardLayout isDarkThemeEnabled={isDarkThemeEnabled} />,
         loader: dashboardLoader,
 
         // Pages rendered inside Dashboard page
@@ -100,7 +100,7 @@ const router = createBrowserRouter([
           {
             path: 'stats',
             element: <Stats />,
-            loader: statsLoader,
+            loader: statsLoader(queryClient),
             errorElement: <ErrorElement />,
           },
 
