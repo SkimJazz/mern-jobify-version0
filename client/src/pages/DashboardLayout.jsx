@@ -20,15 +20,24 @@ import { useState, createContext, useContext } from 'react'; // React router has
 import { checkDefaultTheme} from "../App.jsx";
 import customFetch from "../utils/customFetch.js";
 import { toast } from "react-toastify";
+import { useQuery } from '@tanstack/react-query';
 
+
+
+const userQuery = {
+    queryKey: ['user'],
+    queryFn: async () => {
+        const { data } = await customFetch('/users/current-user');
+        return data;
+    },
+};
 
 
 // Loader will get the data even before the component is rendered
 // (Loader requires something to be returned)
-export const loader = async () => {
+export const loader = (queryClient) => async () => {
     try {
-        const { data } = await customFetch.get('/users/current-user');
-        return data;
+        return await queryClient.ensureQueryData(userQuery);
     }   catch (error) {
         return redirect('/'); // Redirect to landing page
     }
@@ -52,11 +61,12 @@ export const loader = async () => {
 
 // Global Context for SmallSidebar, BigSidebar, Navbar
 const DashboardContext = createContext();
+
 //DashboardLayout component -> Parent for all the following components
-const DashboardLayout = ({ isDarkThemeEnabled }) => {
+const DashboardLayout = ({ isDarkThemeEnabled, queryClient }) => {
 
     // Custom hooks
-    const { user } = useLoaderData();       // RRD hook passed as a prop and used to get user data
+    const { user } = useQuery(userQuery)?.data;       // RRD hook passed as a prop and used to get user data
     const navigate = useNavigate();     // RRD hook passed as a prop
 
     // Navigation hook and state variable
@@ -102,7 +112,9 @@ const DashboardLayout = ({ isDarkThemeEnabled }) => {
     // User LOGOUT
     const logoutUser = async () => {
         navigate('/');                                  // Redirect to landing page
-        await customFetch.get('/auth/logout');      // Request to logout route that clears out the cookie
+        await customFetch.get('/auth/logout');
+        // Validate all queries
+        queryClient.invalidateQueries();
         toast.success('Logging out...', { autoClose: 1500 });
     };
 

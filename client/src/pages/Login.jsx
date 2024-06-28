@@ -7,11 +7,15 @@ import customFetch from '../utils/customFetch';
 import Wrapper from '../assets/wrappers/RegisterAndLoginPage';
 
 
-export const action = async ({request}) => {
+export const action = (queryClient) => async ({request}) => {
+
     const formData = await request.formData();
     const data = Object.fromEntries(formData);
+
     try {
         await customFetch.post('/auth/login', data);
+        // Not passing any data to the query => will validate all queries
+        queryClient.invalidateQueries();
         toast.success('Login successful', {autoClose: 1500});
         return redirect('/dashboard');
     }   catch (error) {
@@ -30,6 +34,7 @@ const Login = () => {
             email: 'test@test.com',
             password: 'secret123',
         };
+
         try {
             await customFetch.post('/auth/login', data);
             toast.success('take a test drive', {autoClose: 1500});
@@ -38,6 +43,7 @@ const Login = () => {
             toast.error(error?.response?.data?.msg);
         }
     };
+
     return (
         <Wrapper>
 

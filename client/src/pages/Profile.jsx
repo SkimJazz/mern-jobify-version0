@@ -1,5 +1,5 @@
 // // Library imports
-import { useOutletContext, Form  } from 'react-router-dom';
+import {useOutletContext, Form, redirect} from 'react-router-dom';
 // import {useNavigation} from 'react-router-dom';
 import { toast } from 'react-toastify';
 
@@ -95,7 +95,7 @@ export default Profile
 // -------------------------- SERVER SIDE --------------------------- //
 
 
-export const action = async ({ request }) => {
+export const action = (queryClient) => async ({ request }) => {
 
     const formData = await request.formData();
 
@@ -110,7 +110,10 @@ export const action = async ({ request }) => {
 
     try {
         await customFetch.patch('/users/update-user', formData);
+        // Validate only queries coming from userQuery key in DashboardLayout
+        queryClient.invalidateQueries(['user']);
         toast.success('Profile updated successfully');
+        return redirect('/dashboard');
     } catch (error) {
         toast.error(error?.response?.data?.msg);
     }

@@ -79,13 +79,15 @@ const router = createBrowserRouter([
         // Child element-2 Login
         path:'login',
         element: <Login />,
-        action: loginAction,
+        action: loginAction(queryClient),
       },
       {
         // Child element-3 Dash Board
         path:'dashboard',
-        element: <DashboardLayout isDarkThemeEnabled={isDarkThemeEnabled} />,
-        loader: dashboardLoader,
+        element: <DashboardLayout
+            isDarkThemeEnabled={isDarkThemeEnabled}
+            queryClient={queryClient} />,
+        loader: dashboardLoader(queryClient),
 
         // Pages rendered inside Dashboard page
         children: [
@@ -113,7 +115,7 @@ const router = createBrowserRouter([
           {
             path: 'profile',
             element: <Profile />,
-            action: profileAction,
+            action: profileAction(queryClient),
           },
 
           {
