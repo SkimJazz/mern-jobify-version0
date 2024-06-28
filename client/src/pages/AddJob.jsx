@@ -35,7 +35,7 @@ import Wrapper from '../assets/wrappers/DashboardFormPage';
  * @example
  * action({ request: { formData: () => ({ position: 'Developer', company: 'Company' }) } });
  */
-export const action = async ({ request }) => {
+export const action = (queryClient) => async ({ request }) => {
     // Access form data using .formData() method
     const formData = await request.formData();
     // Turn the form data into an object using Object.fromEntries() method
@@ -43,6 +43,8 @@ export const action = async ({ request }) => {
     // Try to add a job using the customFetch.post() method
     try {
         await customFetch.post('/jobs', data);
+        // Invalidate queries in the jobs array
+        queryClient.invalidateQueries(['jobs']);
         toast.success('Job added successfully', { autoClose: 1500 });
         return redirect('all-jobs');
     } catch (error) {

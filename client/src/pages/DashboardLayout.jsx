@@ -16,7 +16,7 @@
 import { Outlet, redirect, useLoaderData, useNavigate, useNavigation } from "react-router-dom";
 import { Navbar, BigSidebar, SmallSidebar, Loading } from "../components";
 import Wrapper from "../assets/wrappers/Dashboard.js";
-import { useState, createContext, useContext } from 'react'; // React router has built-in 'prop' that works as a 'context'
+import {useState, createContext, useContext, useEffect} from 'react'; // React router has built-in 'prop' that works as a 'context'
 import { checkDefaultTheme} from "../App.jsx";
 import customFetch from "../utils/customFetch.js";
 import { toast } from "react-toastify";
@@ -76,6 +76,7 @@ const DashboardLayout = ({ isDarkThemeEnabled, queryClient }) => {
     // State variables
     const [showSidebar, setShowSidebar] = useState(false);
     const [isDarkTheme, setIsDarkTheme] = useState(isDarkThemeEnabled ?? checkDefaultTheme());
+    const [isAuthError, setIsAuthError] = useState(false);
 
 
     // Dark theme toggle
@@ -118,6 +119,23 @@ const DashboardLayout = ({ isDarkThemeEnabled, queryClient }) => {
         toast.success('Logging out...', { autoClose: 1500 });
     };
 
+
+    customFetch.interceptors.response.use(
+        (response) => {
+        return response;
+        },
+        (error) => {
+            if (error?.response?.status === 401) {
+                setIsAuthError(true);
+            }
+            return Promise.reject(error);
+        }
+    );
+
+    useEffect(() => {
+        if (!isAuthError) return;
+        logoutUser();
+    }, [isAuthError]);
 
     return (
 

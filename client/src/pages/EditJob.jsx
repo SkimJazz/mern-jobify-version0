@@ -8,19 +8,29 @@ import { toast } from 'react-toastify';
 import { FormRow, FormRowSelect, SubmitBtn } from '../components';
 import Wrapper from '../assets/wrappers/DashboardFormPage';
 import customFetch from '../utils/customFetch';
-
+import { useQuery } from '@tanstack/react-query';
 
 // Local imports - Server side
 import { JOB_STATUS, JOB_TYPE } from '../../../utils/constants';
 
 
 
+const singleJobQuery = (id) => {
+    return {
+        queryKey: ['job', id],
+        queryFn: async () => {
+            const { data } = await customFetch.get(`/jobs/${id}`);
+            return data;
+        },
+    };
+};
+
+
+
 
 //1. Data Loader: Loads job data in preparation for editing
-export const loader = async ({ params }) => {
-    // console.log(params)
+export const loader = (queryClient) => async ({ params }) => {
 
-    // Try catch block to get job data using the job ID
     try {
         /**
          * BACK TICK TEMPLATE LITERAL
@@ -47,8 +57,9 @@ export const loader = async ({ params }) => {
          * const { data } = await customFetch.get(`/jobs/${params.id}`);
          * // The template literal `/jobs/${params.id}` will evaluate to '/jobs/1234'
          */
-        const { data } = await customFetch.get(`/jobs/${params.id}`);
-        return data;
+        // const { data } = await customFetch.get(`/jobs/${params.id}`);
+        await queryClient.ensureQueryData(singleJobQuery(params));
+        return params.id;
     }   catch (error) {
         // return error using toast.error() method
         toast.error(error?.response?.data?.msg, {autoClose: 1500});
@@ -61,8 +72,10 @@ export const loader = async ({ params }) => {
 //2. EditJob Component render a form to edit job details
 const EditJob = () => {
 
+    const id = useLoaderData();
+
     // useLoaderData() hook called to get job data (in this case the jobs ID)
-    const { job } = useLoaderData();
+    const { data: { job } } = useQuery(singleJobQuery(id));
 
     // Render form to edit job details
     return (
@@ -109,7 +122,7 @@ export default EditJob
 
 
 //3. EditJobAction: Ref App.jsx for EditJob route configuration
-export const action = async ({ request, params }) => {
+export const action = (queryClient) => async ({ request, params }) => {
     // Get the formData from the request in the database
     const formData = await request.formData();
     // Convert formData to an object (Why? Because we want to send the data as an object)
@@ -118,6 +131,7 @@ export const action = async ({ request, params }) => {
     try {
         // Await customFetch.put() method to update job with mongoDB '_id' -> Use template literal as we want to pass in the 'id'
         await customFetch.patch(`/jobs/${params.id}`, data);
+        queryClient.invalidateQueries(['jobs']);
         // Include toast.success() method to show success message
         toast.success('Job updated successfully', {autoClose: 1500});
         // return a redirect to dashboard/all-jobs page if all is correct
