@@ -34,6 +34,8 @@ import morgan from "morgan";
 import mongoose from 'mongoose';
 import cookieParser from 'cookie-parser';
 import cloudinary from 'cloudinary';
+import helmet from 'helmet';
+import mongoSanitize from 'express-mongo-sanitize';
 
 // ROUTER IMPORTS
 import jobRouter from "./routes/jobRouter.js";
@@ -125,9 +127,14 @@ app.use(cookieParser());
 // Middleware for parsing JSON data
 app.use(express.json());
 
+//
+app.use(helmet());
+app.use(mongoSanitize());
+
 
 
 // -------------------------- ROUTES ------------------------------- //
+
 
 
 // GET request controller request, response
@@ -152,16 +159,6 @@ app.use('/api/v0/users', authenticateUser, userRouter);
 app.get('*', (req, res) => {
     res.sendFile(path.resolve(__dirname, './client/dist', 'index.html'));
 });
-
-// ------------------------ DUMMY ROUTES --------------------------- //
-
-// Dummy route to test fetching data from the server in development mode
-app.get('/api/v0/test', (req, res) => {
-    res.json({ msg: 'test route' });
-});
-
-
-
 
 
 // -------------------------- ERROR HANDLING ----------------------- //
