@@ -180,6 +180,7 @@ in the constants.js file are used to define the possible values for certain fiel
 in the Job schema. They are imported into the JobModel.js file and used in the 
 definition of the Job schema to restrict the values of these fields.
 
+
 #### Build Front-End on Render
 
 The selected code is a part of the `package.json` file in a Node.js project. 
@@ -233,9 +234,7 @@ be run from the command line using `npm run <script-name>`.
 #### Cloning and Installing project on local PC
 
 
-Sure, here are the steps to install the project on your personal PC:
-
-1. **Clone the Repository**: First, you need to clone the repository from GitHub
+1. **Clone the Repository**: First, clone the repository from GitHub
 to your local machine. Open your terminal and navigate to the directory where you
 want to clone the repository. Then, use the following command:
 
@@ -269,3 +268,9 @@ npm run dev
 Now, both the server and client should be running on your local machine. The server 
 will restart automatically whenever there are changes thanks to `nodemon`, and the 
 client will also update in real time as you make changes to the code.
+
+5. **Setup the `.env` file**: The project uses environment variables to store sensitive
+information such as database connection strings and JWT secrets. You need to create a
+`.env` file in the root directory of the project and add the necessary variables. Ref
+the `.env.example` file for the required variables.
+
