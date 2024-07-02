@@ -56,6 +56,21 @@ import { authenticateUser } from './middleware/authMiddleware.js';
 
 // -------------------------- CLOUDINARY CONFIG ---------------------- //
 
+/**
+ * Configures the Cloudinary service.
+ *
+ * Cloudinary was chosen as the image and video management solution for this
+ * project. First choice was Render.com, but Render does not support persistent
+ * image storage on the free web service.
+ *
+ * It is configured using three environment variables:
+ * - CLOUD_NAME: The name of your cloud as provided by Cloudinary.
+ * - CLOUD_API_KEY: The API key provided by Cloudinary for your account.
+ * - CLOUD_API_SECRET: The API secret key provided by Cloudinary for your account.
+ *
+ * Values should be stored in .env file (ref .env.example) for security and configuration
+ * management.
+ */
 cloudinary.config({
     cloud_name: process.env.CLOUD_NAME,
     api_key: process.env.CLOUD_API_KEY,
