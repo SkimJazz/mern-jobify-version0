@@ -25,7 +25,8 @@
  * @requires ./middleware/errorHandlerMiddleware.js
  * @requires ./middleware/authMiddleware.js
  */
-import 'express-async-errors';  // MUST BE AT TOP OF ALL IMPORTS!!!
+// Library imports
+import 'express-async-errors';  // express-async-errors MUST BE AT TOP OF ALL OTHER IMPORTS!!!
 import * as dotenv from 'dotenv';
 dotenv.config();
 import express from 'express';
@@ -92,8 +93,9 @@ const __dirname = dirname(fileURLToPath(import.meta.url));
 // -------------------------- MIDDLEWARE --------------------------- //
 
 /**
- * @description Middleware for morgan logging wrapped in a condition to only run in development
- * environment. If this is === production, morgan will not show the logs in the terminal
+ * @description Middleware for morgan logging wrapped in a condition to
+ * only run in development environment. If this is === production, morgan
+ * will not show the logs in the terminal
  */
 if (process.env.NODE_ENV === 'development') {
     app.use(morgan('dev'));
@@ -207,37 +209,45 @@ app.use((err, req, res, next) => {
 
 // -------------------------- SERVER CONNECTION --------------------- //
 
-// Ears on port 3000 with port 4000 as backup
+// Ears on my local port 3000 with port 4000 as backup
 const port = process.env.PORT || 4000;
 
-
+/**
+ * This block of code is responsible for connecting to the MongoDB database and
+ * starting the server. It uses a try-catch block to handle any potential errors
+ * that might occur during these operations.
+ *
+ * @async
+ * @function
+ * @description Tries to establish a connection with the MongoDB database using
+ * the connection string from the environment variables. If the connection is
+ * successful, it starts the server on the specified port. If an error occurs
+ * during these operations, it logs the error and terminates the process with
+ * a failure status code (1).
+ */
 try {
+    // Attempt to connect to the MongoDB database
     await mongoose.connect(process.env.MONGO_URL);
+    // If the connection is successful, start the server
     app.listen(port, () => {
         console.log(`server running on PORT ${port}....`);
     });
 } catch (error) {
+    // If error occurs, log error and terminate process with a failure status code
     console.log(error);
     process.exit(1);
 }
 
 
 /**
- * WARNING!! Server conflict error for app.listen.
+ * WARNING!! DIRECT Server conflict for the 'app.listen' function
  *
- * @throws {Error} If the server is already running on the specified
- * port, an error is thrown indicating that the port is already in use.
- *
- * @example
- * try {
- *   await mongoose.connect(process.env.MONGO_URL);
- *   app.listen(port, () => {
- *     console.log(`server running on PORT ${port}....`);
- *   });
- * } catch (error) {
- *   console.log(error);
- *   process.exit(1);
- * }
+ * @throws {Error} This error can occur if the server is already running.
+ * The following 'app.listen' function is in direct conflict with the 'try-catch'
+ * block that starts the server (above code block) The 'try-catch' block starts
+ * the server if the connection to the MongoDB database is successful. If the
+ * server is already running, the 'app.listen' function will throw an error since
+ * the server is already running on the specified port.
  *
  * @param {number} port - The port number on which the server should
  * listen.
