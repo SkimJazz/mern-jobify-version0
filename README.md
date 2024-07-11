@@ -1,6 +1,5 @@
 # Complete App
 
-
 #### Create React APP
 
 [VITE](https://vitejs.dev/guide/)
@@ -155,7 +154,7 @@ export default AddJob;
 App.jsx
 
 ```jsx
-import HomeLayout from '../ pages/HomeLayout';
+import HomeLayout from '../pages/HomeLayout';
 ```
 
 pages/index.js
@@ -185,7 +184,7 @@ import {
   Login,
   DashboardLayout,
   Error,
-} from './index';
+} from './pages';   // Changed from './index' to './pages' or Vite will lose its shit
 
 const router = createBrowserRouter([
   {
